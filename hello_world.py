@@ -8,7 +8,7 @@ if __name__ == "__main__":
     # - IMREAD_UNCHANGED 按原样加载图像（包括 alpha 通道，如果存在）。其实就是将图片变为黑白的了
     # - IMREAD_GRAYSCALE 将图像作为强度加载
     # image = cv2.imread("images_cn/BT1-001R.png")
-    image = cv2.imread(cv2.samples.findFile("images_cn/"))
+    image = cv2.imread(cv2.samples.findFile("images_cn/BT1-001R.png"))
 
     if image is None:
         sys.exit("无法读取图片")
