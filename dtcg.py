@@ -7,7 +7,7 @@ def HandlerImage():
     # 在 dirPahtEN 中找到对应的图像
     filesEN = os.listdir(dirPathEN)
     for fileEN in filesEN:
-        # 如果文件名以 cardNamePrefix 定义的卡名开头，并且第八个字符为点，则开始处理图片
+        # 如果文件名以 cardNamePrefix 定义的卡名开头，并且卡号末尾为点，则开始处理图片
         if fileEN.startswith(filePrefix) and fileEN[fileCardNumEnd] == ".":
             filePathEN = os.path.join(dirPathEN, fileEN)
             # 读取 cardNamePrefix 定义的卡名开头的图像
@@ -15,9 +15,9 @@ def HandlerImage():
             # 取出 cardNamePrefix 定义的卡名后面的数字
             cardIDNumEN = fileEN[fileCardNumStart:fileCardNumEnd]
 
-            # 如果两张图片的数字相同，且第七个元素为点
+            # 如果两张图片的数字相同
             if cardIDNumCN == cardIDNumEN:
-                logging.info("开始处理英文图片: {},卡片编号: {}".format(filePathEN, cardIDNumEN))
+                logging.debug("开始处理英文图片: {},卡片编号: {}".format(filePathEN, cardIDNumEN))
                 # 取出 imageEN 中指定高度和宽度的部分，并覆盖到 imageCN 中
                 imageCN[highStart:highEnd, wideStart:wideEnd] = imageEN[
                     highStart:highEnd, wideStart:wideEnd
@@ -25,7 +25,7 @@ def HandlerImage():
 
                 # 将 imageCN 保存到 dirSuffixDst 中
                 filePathDst = os.path.join(dirPathDst, fileCN)
-                logging.info("保存图片: {}".format(filePathDst))
+                logging.debug("保存图片: {}".format(filePathDst))
                 cv2.imwrite(filePathDst, imageCN)
 
 
@@ -76,8 +76,9 @@ if __name__ == "__main__":
     logging.info("开始逐一处理【{}】开头的图片".format(filePrefix))
     logging.info("中文图片路径: {}".format(dirPathCN))
     logging.info("英文图片路径: {}".format(dirPathEN))
+    logging.info("合成图片路径: {}".format(dirPathDst))
     for fileCN in filesCN:
-        # 如果图片的名称以 cardNamePrefix 定义的卡名开头，并且第八个字符为字母，则处理该图片
+        # 如果图片的名称以 cardNamePrefix 定义的卡名开头，并且卡号末尾为字母，则处理该图片
         if fileCN.startswith(filePrefix) and fileCN[fileCardNumEnd].isalpha():
             filePathCN = os.path.join(dirPathCN, fileCN)
             # 读取 cardNamePrefix 定义的卡名开头的图像
@@ -90,7 +91,9 @@ if __name__ == "__main__":
                 int(cardIDNumCN) <= fileCardNumOfTamerStart
                 or int(cardIDNumCN) >= fileCardNumOfTamerEnd
             ):
-                logging.info("处理数码宝贝数码蛋图片: {},卡片编号: {}".format(filePathCN, cardIDNumCN))
+                logging.debug(
+                    "处理数码宝贝数码蛋图片: {},卡片编号: {}".format(filePathCN, cardIDNumCN)
+                )
                 highStart = int(265)  # 高度起点
                 highEnd = int(350)  # 高度终点(数码宝贝)
                 wideStart = int(32)  # 宽度起点
@@ -100,7 +103,9 @@ if __name__ == "__main__":
                 int(cardIDNumCN) >= fileCardNumOfDigimonStart
                 and int(cardIDNumCN) <= fileCardNumOfDigimonEnd
             ):
-                logging.info("处理驯兽师、选项卡图片: {},卡片编号: {}".format(filePathCN, cardIDNumCN))
+                logging.debug(
+                    "处理驯兽师、选项卡图片: {},卡片编号: {}".format(filePathCN, cardIDNumCN)
+                )
                 highStart = int(265)  # 高度起点
                 highEnd = int(330)  # 高度终点(驯兽师、选项)
                 wideStart = int(32)  # 宽度起点
