@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import sys
 import cv2
 
-if __name__ == "__main__":
+# OpenCV 中的 GUI 之 图像入门：https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html
+def GUIGettingStartedWithImages():
     # imread() 读取图片，并将图片实例化为一个 Mat 对象
     # 可以接收参数以指定我们想要的图像格式
     # - IMREAD_COLOR 以 BGR 8 位格式加载图像。这是此处使用的默认值。
@@ -22,3 +25,7 @@ if __name__ == "__main__":
     if k == ord("s"):
         # imwrite() 将 Mat 对象写入图片并保存
         cv2.imwrite("images/OpenCV_logo_save.png", image)
+
+
+if __name__ == "__main__":
+    GUIGettingStartedWithImages()
