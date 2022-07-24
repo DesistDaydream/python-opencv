@@ -11,7 +11,8 @@ def GUIGettingStartedWithImages():
     # - IMREAD_UNCHANGED 按原样加载图像（包括 alpha 通道，如果存在）。其实就是将图片变为黑白的了
     # - IMREAD_GRAYSCALE 将图像作为强度加载
     # image = cv2.imread("images/OpenCV_logo.png")
-    image = cv2.imread(cv2.samples.findFile("images/OpenCV_logo.png"))
+    image = cv2.imread(cv2.samples.findFile("images/OpenCV_logo.png"), cv2.IMREAD_COLOR)
+    # 注意：Mat 对象实际上是 NumPy 库中的 numpy.ndarray 对象，因此我们可以使用 numpy 的函数来操作它
 
     if image is None:
         sys.exit("无法读取图片")
