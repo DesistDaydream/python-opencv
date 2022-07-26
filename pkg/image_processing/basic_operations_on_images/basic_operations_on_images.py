@@ -24,8 +24,12 @@ def AccessingAndModifyingPixelValues(img: cv2.Mat):
     cv2.imshow("窗口的标题", img)
     cv2.waitKey(0)
 
-    # 第三个元素的值为 0 表示蓝色，1 表示绿色，2 表示红色，对应 B、G、R 通道
-    # 这里是获取图像中，第1行，第1列的 蓝色 通道的值
+    # 获取图像中，第1行，第1列像素的蓝色通道的值
+    # 第三个元素的值:
+    # - 0 表示蓝色
+    # - 1 表示绿色
+    # - 2 表示红色
+    # 分别对应 B、G、R 通道
     blue = img[1, 1, 0]
     print(blue)
 
