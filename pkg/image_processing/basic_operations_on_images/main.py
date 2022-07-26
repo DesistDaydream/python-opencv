@@ -15,13 +15,13 @@ def AccessingAndModifyingPixelValues(img: cv2.Mat):
 
     # 修改像素的值。
     # ！！！特别注注意！！！这里的 [0, 0, 255] 不是按照 RGB(i.e.红、绿、蓝)的顺序，而是按照 BGR(i.e.蓝、绿、红) 的顺序
-    # 所以这里是将图片中 “100-300 行中的第 100-200 列(i.e.高 200 像素，宽 100 像素)”的所有像素的值设为 BGR(0, 0, 255)，即.红色
-    img[100:300, 100:200] = [0, 0, 255]
+    # 所以这里是将图片中 “从上往下数第 50 行，从左往右数第 60 列” 这个像素的值设为 BGR(0, 0, 255)，即.红色
+    img[50, 60] = [0, 0, 255]
     # 注意：Mat 对象实际上是 NumPy 库中的 numpy.ndarray 对象，因此我们可以使用 numpy 的函数来操作它
     # Numpy 通常用来快速数组计算，因此简单得访问每个像素值并对其进行修改将非常难缓慢，并不鼓励这样做
 
-    # 此时打开图像，可以看到图片左上角出现了一个红色的长方形，这个长方形的高度是 200 像素，宽度是 100 像素
-    cv2.imshow("窗口的标题", img)
+    # 此时打开图像，可以看到图片左上角区域中的一个像素变为了红色
+    cv2.imshow("Window Title", img)
     cv2.waitKey(0)
 
     # 获取图像中，第1行，第1列像素的蓝色通道的值
@@ -46,7 +46,7 @@ def BetterAccessingAndModifyingPixelValues(img: cv2.Mat):
     img.itemset((1, 230, 0), 255)
 
     # 此时打开图像，放大一下,可以看到第 1 行 230 列像素不是红色了，变成了 255,0,255 的颜色，类似粉色
-    cv2.imshow("窗口的标题", img)
+    cv2.imshow("Window Title", img)
     cv2.waitKey(0)
 
 
@@ -64,6 +64,6 @@ def AccessingImageProperties(img: cv2.Mat):
 
 if __name__ == "__main__":
     img = cv2.imread("images/OpenCV_logo.png", flags=1)
-    # AccessingAndModifyingPixelValues(img)
-    BetterAccessingAndModifyingPixelValues(img)
+    AccessingAndModifyingPixelValues(img)
+    # BetterAccessingAndModifyingPixelValues(img)
     # AccessingImageProperties(img)

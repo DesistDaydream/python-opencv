@@ -18,7 +18,7 @@ def GUIGettingStartedWithImages():
         sys.exit("无法读取图片")
 
     # imshow() 打开一个窗口，并显示图片
-    cv2.imshow("窗口的标题", image)
+    cv2.imshow("Window Title", image)
     # waitKey() 等待用户按键，若按键为 ESC，则返回 -1。如果不等待，那么打开的窗口瞬间就会关闭
     k = cv2.waitKey(0)
 
