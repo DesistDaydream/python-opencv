@@ -10,14 +10,11 @@ img = cv2.imread("images/roi.jpg")
 print(img.shape)
 
 # 获取图像中的我们感兴趣的区域，i.e.ROI
-# 这里选定的是 “280 行至 350 行” 且 “330 列 至 390 列” 之间所有像素组成的图像
-ball = img[240:280, 280:320]
+# 这里选定的是 “280 行至 340 行” 且 “330 列 至 390 列” 之间所有像素组成的图像
+ball = img[280:340, 330:390]
 
-# 将 ROI 覆盖到原图像中的 “40 行至 80 行” 且 “140 列至 180 列” 之间的所有像素
-img[40:80, 140:180] = ball
+# 将 ROI 覆盖到原图像中的 “273 行至 333 行” 且 “100 列至 160 列” 之间的所有像素
+img[273:333, 100:160] = ball
 
-# cv2.imwrite("images/roi_new.jpg", ball)
-
-cv2.imshow("Window Title", img)
-# waitKey() 等待用户按键，若按键为 ESC，则返回 -1。如果不等待，那么打开的窗口瞬间就会关闭
-k = cv2.waitKey(0)
+# 效果如下，图像左边会多出一个小球
+cv2.imwrite("images/roi_new.jpg", img)
