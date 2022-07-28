@@ -27,6 +27,9 @@ def HandlerImage():
 
                 # 将 imageCN 保存到 dirSuffixDst 中
                 filePathDst = os.path.join(dirPathDst, fileCN)
+                # 递归创建目录
+                if not os.path.exists(dirPathDst):
+                    os.makedirs(dirPathDst)
                 logging.debug("保存图片: {}".format(filePathDst))
                 cv2.imwrite(filePathDst, imageCN)
 
@@ -49,11 +52,11 @@ if __name__ == "__main__":
         print("未知操作系统")
         exit(1)
 
-    dirSuffixCN = "STC-01"
-    dirSuffixEN = "ST-1"
-    dirSuffixDst = "ST-01"
+    dirSuffixCN = "STC-03"
+    dirSuffixEN = "ST-3"
+    dirSuffixDst = "ST-03"
     # 确定图片名称前缀，以便匹配图片
-    filePrefix = "ST1-"
+    filePrefix = "ST3-"
     # 图片中卡号的起始和结束位置，通常来说
     # - 补充包起始 4 结束 7
     # - 预组包起始 4 结束 6
