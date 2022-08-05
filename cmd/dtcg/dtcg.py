@@ -5,6 +5,12 @@ import cv2
 import logging
 
 
+def CheckCardNum(filePath, cardNum):
+    if not cardNum.isdigit():
+        logging.error("{} 的卡号 {} 不为正整数".format(filePath, cardNum))
+        exit(1)
+
+
 def HandlerImage():
     # 在 dirPahtEN 中找到对应的图像
     filesEN = os.listdir(dirPathEN)
@@ -14,12 +20,14 @@ def HandlerImage():
             fileEN.startswith(filePrefixEN)
             and fileEN[len(filePrefixEN) + fileCardNumLenEN] == "."
         ):
-            # 英文图片绝对路径
+            # 英文图片的绝对路径
             filePathEN = os.path.join(dirPathEN, fileEN)
             # 读取 cardNamePrefix 定义的卡名开头的图像
             imageEN = cv2.imread(filePathEN)
             # 获取文件名中的卡号，即文件名前缀的后面几位字符
             cardNumEN = fileEN[len(filePrefixEN) : len(filePrefixEN) + fileCardNumLenEN]
+            # 若卡号不为正整数，则退出程序
+            CheckCardNum(filePathEN, cardNumEN)
 
             # 如果两张图片的卡号相同
             if cardNumCN == cardNumEN:
@@ -29,18 +37,20 @@ def HandlerImage():
                     highStart:highEnd, wideStart:wideEnd
                 ]
 
-                # 将 imageCN 保存到 dirSuffixDst 中
+                # 处理后图片的绝对路径
                 filePathDst = os.path.join(dirPathDst, fileCN)
                 # 递归创建目录
                 if not os.path.exists(dirPathDst):
                     os.makedirs(dirPathDst)
                 logging.debug("保存图片: {}".format(filePathDst))
+
+                # 将 imageCN 保存到 dirSuffixDst 中
                 cv2.imwrite(filePathDst, imageCN)
 
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format="[%(asctime)s] %(filename)s[line:%(lineno)d] %(levelname)s %(message)s",
         datefmt="%Y-%m-%d %a %H:%M:%S",
         # filename="test.log",
@@ -57,14 +67,14 @@ if __name__ == "__main__":
         exit(1)
 
     # 目录前缀。
-    dirSuffixCN = "STC-02"
-    dirSuffixEN = "ST-2"
-    dirSuffixDst = "ST-02"
+    dirSuffixCN = "STC-04"
+    dirSuffixEN = "ST-4"
+    dirSuffixDst = "ST-04"
     # 图片名称前缀。用以匹配图片
     # 中文前缀
-    filePrefixCN = "ST2-"
+    filePrefixCN = "stc4-"
     # 英文前缀
-    filePrefixEN = "ST2-"
+    filePrefixEN = "ST4-"
     # 图片中卡号的字符长度
     # 中文长度
     fileCardNumLenCN = 2
@@ -95,13 +105,15 @@ if __name__ == "__main__":
         # if fileCN.startswith(filePrefixCN) and fileCN[fileCardNumEndCN].isalpha():
         # 如果图片的名称以 filePrefixCN 定义的卡名开头，则处理该图片
         if fileCN.startswith(filePrefixCN):
-            # 中文图片绝对路径
+            # 中文图片的绝对路径
             filePathCN = os.path.join(dirPathCN, fileCN)
 
             # 读取 filePrefixCN 定义的卡名开头的图像
             imageCN = cv2.imread(filePathCN)
             # 获取文件名中的卡号，即文件名前缀的后面几位字符
             cardNumCN = fileCN[len(filePrefixCN) : len(filePrefixCN) + fileCardNumLenCN]
+            # 若卡号不为正整数，则退出程序
+            CheckCardNum(filePathCN, cardNumCN)
 
             # 数码宝贝与选项卡、驯兽师卡需要删除的水印高度不一样，根据实际情况，选择要处理的图片
             if (
