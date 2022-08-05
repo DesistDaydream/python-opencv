@@ -59,33 +59,34 @@ if __name__ == "__main__":
 
     # 判断当前系统是 windows 还是 linux
     if os.name == "posix":
-        dirPrefix = "/mnt/d/Projects/DesistDaydream/dtcg/images"
+        dirPrefix = "/mnt/e/Projects/DesistDaydream/dtcg/images"
     elif os.name == "nt":
-        dirPrefix = "D:\Projects\DesistDaydream\dtcg\images"
+        dirPrefix = "E:\Projects\DesistDaydream\dtcg\images"
     else:
         print("未知操作系统")
         exit(1)
 
     # 目录前缀。
-    dirSuffixCN = "STC-04"
-    dirSuffixEN = "ST-4"
-    dirSuffixDst = "ST-04"
+    dirSuffixCN = "BTC-01"
+    dirSuffixEN = "BT01-03"
+    dirSuffixDst = "BT-02"
     # 图片名称前缀。用以匹配图片
     # 中文前缀
-    filePrefixCN = "stc4-"
+    filePrefixCN = "BT2-"
     # 英文前缀
-    filePrefixEN = "ST4-"
+    filePrefixEN = "BT2-"
     # 图片中卡号的字符长度
+    # 通常来说，预组的长度为2，扩展包的长度为3
     # 中文长度
-    fileCardNumLenCN = 2
+    fileCardNumLenCN = 3
     # 英文长度
-    fileCardNumLenEN = 2
+    fileCardNumLenEN = 3
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
-    fileCardNumOfDigimonStart = 11  # 数码宝贝小于等于该号
-    fileCardNumOfDigimonEnd = 18  # 数码宝贝大于等于该号
+    fileCardNumOfDigimonStart = 83  # 数码宝贝小于等于该号
+    fileCardNumOfDigimonEnd = 111  # 数码宝贝大于等于该号
     # 图片中的卡号中驯兽师、选项的起始和结束卡号
-    fileCardNumOfTamerStart = 12  # 驯兽师和选项大于等于该号
-    fileCardNumOfTamerEnd = 16  # 驯兽师和选项小于等于该号
+    fileCardNumOfTamerStart = 84  # 驯兽师和选项大于等于该号
+    fileCardNumOfTamerEnd = 110  # 驯兽师和选项小于等于该号
 
     # 需要将裁剪的图像合并到的图像的路径
     dirPathCN = os.path.join(dirPrefix, "cn", dirSuffixCN)
@@ -101,10 +102,13 @@ if __name__ == "__main__":
     logging.info("英文图片路径: 【{}】".format(dirPathEN))
     logging.info("合成图片路径: 【{}】".format(dirPathDst))
     for fileCN in filesCN:
-        # 如果图片的名称以 filePrefixCN 定义的卡名开头，并且卡号末尾为字母，则处理该图片
-        # if fileCN.startswith(filePrefixCN) and fileCN[fileCardNumEndCN].isalpha():
         # 如果图片的名称以 filePrefixCN 定义的卡名开头，则处理该图片
-        if fileCN.startswith(filePrefixCN):
+        # if fileCN.startswith(filePrefixCN):
+        # 如果图片的名称以 filePrefixCN 定义的卡名开头，并且卡号末尾为字母，则处理该图片
+        if (
+            fileCN.startswith(filePrefixCN)
+            and fileCN[len(filePrefixCN) + fileCardNumLenCN].isalpha()
+        ):
             # 中文图片的绝对路径
             filePathCN = os.path.join(dirPathCN, fileCN)
 
