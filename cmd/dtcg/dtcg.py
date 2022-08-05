@@ -10,17 +10,20 @@ def HandlerImage():
     filesEN = os.listdir(dirPathEN)
     for fileEN in filesEN:
         # 如果文件名以 cardNamePrefix 定义的卡名开头，并且卡号末尾为点，则开始处理图片
-        if fileEN.startswith(filePrefixEN) and fileEN[fileCardNumEndEN] == ".":
+        if (
+            fileEN.startswith(filePrefixEN)
+            and fileEN[len(filePrefixEN) + fileCardNumLenEN] == "."
+        ):
             # 英文图片绝对路径
             filePathEN = os.path.join(dirPathEN, fileEN)
             # 读取 cardNamePrefix 定义的卡名开头的图像
             imageEN = cv2.imread(filePathEN)
-            # 取出 cardNamePrefix 定义的卡名后面的数字
-            cardIDNumEN = fileEN[fileCardNumStartEN:fileCardNumEndEN]
+            # 获取文件名中的卡号，即文件名前缀的后面几位字符
+            cardNumEN = fileEN[len(filePrefixEN) : len(filePrefixEN) + fileCardNumLenEN]
 
-            # 如果两张图片的数字相同
-            if cardIDNumCN == cardIDNumEN:
-                logging.debug("开始处理英文图片: {},卡片编号: {}".format(filePathEN, cardIDNumEN))
+            # 如果两张图片的卡号相同
+            if cardNumCN == cardNumEN:
+                logging.debug("开始处理英文图片: {},卡片编号: {}".format(filePathEN, cardNumEN))
                 # 取出 imageEN 中指定高度和宽度的部分，并覆盖到 imageCN 中
                 imageCN[highStart:highEnd, wideStart:wideEnd] = imageEN[
                     highStart:highEnd, wideStart:wideEnd
@@ -62,15 +65,11 @@ if __name__ == "__main__":
     filePrefixCN = "ST2-"
     # 英文前缀
     filePrefixEN = "ST2-"
-    # 图片中卡号的起始和结束位置，通常来说
-    # - 补充包起始 4 结束 7
-    # - 预组包起始 4 结束 6
-    # 中文的
-    fileCardNumStartCN = 2
-    fileCardNumEndCN = 6
-    # 英文的
-    fileCardNumStartEN = 4
-    fileCardNumEndEN = 6
+    # 图片中卡号的字符长度
+    # 中文长度
+    fileCardNumLenCN = 2
+    # 英文长度
+    fileCardNumLenEN = 2
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
     fileCardNumOfDigimonStart = 11  # 数码宝贝小于等于该号
     fileCardNumOfDigimonEnd = 18  # 数码宝贝大于等于该号
@@ -92,25 +91,25 @@ if __name__ == "__main__":
     logging.info("英文图片路径: 【{}】".format(dirPathEN))
     logging.info("合成图片路径: 【{}】".format(dirPathDst))
     for fileCN in filesCN:
-        # 如果图片的名称以 cardNamePrefix 定义的卡名开头，并且卡号末尾为字母，则处理该图片
+        # 如果图片的名称以 filePrefixCN 定义的卡名开头，并且卡号末尾为字母，则处理该图片
         # if fileCN.startswith(filePrefixCN) and fileCN[fileCardNumEndCN].isalpha():
-        # 如果图片的名称以 cardNamePrefix 定义的卡名开头，则处理该图片
+        # 如果图片的名称以 filePrefixCN 定义的卡名开头，则处理该图片
         if fileCN.startswith(filePrefixCN):
             # 中文图片绝对路径
             filePathCN = os.path.join(dirPathCN, fileCN)
 
-            # 读取 cardNamePrefix 定义的卡名开头的图像
+            # 读取 filePrefixCN 定义的卡名开头的图像
             imageCN = cv2.imread(filePathCN)
-            # 取出 cardNamePrefix 定义的卡名后面的数字
-            cardIDNumCN = fileCN[fileCardNumStartCN:fileCardNumEndCN]
+            # 获取文件名中的卡号，即文件名前缀的后面几位字符
+            cardNumCN = fileCN[len(filePrefixCN) : len(filePrefixCN) + fileCardNumLenCN]
 
             # 数码宝贝与选项卡、驯兽师卡需要删除的水印高度不一样，根据实际情况，选择要处理的图片
             if (
-                int(cardIDNumCN) <= fileCardNumOfDigimonStart
-                or int(cardIDNumCN) >= fileCardNumOfDigimonEnd
+                int(cardNumCN) <= fileCardNumOfDigimonStart
+                or int(cardNumCN) >= fileCardNumOfDigimonEnd
             ):
                 logging.debug(
-                    "开始处理中文图片。数码宝贝/数码蛋图片: {},卡片编号: {}".format(filePathCN, cardIDNumCN)
+                    "开始处理中文图片。数码宝贝/数码蛋图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
                 )
                 highStart = int(265)  # 高度起点
                 highEnd = int(350)  # 高度终点(数码宝贝)
@@ -118,11 +117,11 @@ if __name__ == "__main__":
                 wideEnd = int(398)  # 宽度终点
                 HandlerImage()
             elif (
-                int(cardIDNumCN) >= fileCardNumOfTamerStart
-                and int(cardIDNumCN) <= fileCardNumOfTamerEnd
+                int(cardNumCN) >= fileCardNumOfTamerStart
+                and int(cardNumCN) <= fileCardNumOfTamerEnd
             ):
                 logging.debug(
-                    "开始处理中文图片。驯兽师/选项卡图片: {},卡片编号: {}".format(filePathCN, cardIDNumCN)
+                    "开始处理中文图片。驯兽师/选项卡图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
                 )
                 highStart = int(265)  # 高度起点
                 highEnd = int(330)  # 高度终点(驯兽师、选项)
@@ -130,6 +129,6 @@ if __name__ == "__main__":
                 wideEnd = int(398)  # 宽度终点
                 HandlerImage()
             else:
-                logging.error("卡片编号【{}】不在处理范围内".format(cardIDNumCN))
+                logging.error("卡片编号【{}】不在处理范围内".format(cardNumCN))
         else:
             logging.error("【{}】图片没有匹配到【{}】前缀".format(fileCN, filePrefixCN))
