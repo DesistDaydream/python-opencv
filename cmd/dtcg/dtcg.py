@@ -59,9 +59,9 @@ if __name__ == "__main__":
 
     # 判断当前系统是 windows 还是 linux
     if os.name == "posix":
-        dirPrefix = "/mnt/e/Projects/DesistDaydream/dtcg/images"
+        dirPrefix = "/mnt/d/Projects/DesistDaydream/dtcg/images"
     elif os.name == "nt":
-        dirPrefix = "E:\Projects\DesistDaydream\dtcg\images"
+        dirPrefix = "D:\Projects\DesistDaydream\dtcg\images"
     else:
         print("未知操作系统")
         exit(1)
@@ -69,12 +69,12 @@ if __name__ == "__main__":
     # 目录前缀。
     dirSuffixCN = "BTC-01"
     dirSuffixEN = "BT01-03"
-    dirSuffixDst = "BT-02"
+    dirSuffixDst = "BT-01"
     # 图片名称前缀。用以匹配图片
     # 中文前缀
-    filePrefixCN = "BT2-"
+    filePrefixCN = "BT1-"
     # 英文前缀
-    filePrefixEN = "BT2-"
+    filePrefixEN = "BT1-"
     # 图片中卡号的字符长度
     # 通常来说，预组的长度为2，扩展包的长度为3
     # 中文长度
