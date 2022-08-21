@@ -5,10 +5,12 @@ import cv2
 import logging
 
 
-def CheckCardNum(filePath, cardNum):
-    if not cardNum.isdigit():
+def CheckCardNum(filePath, cardNum) -> bool:
+    if cardNum.isdigit():
+        return True
+    else:
         logging.error("{} 的卡号 {} 不为正整数".format(filePath, cardNum))
-        exit(1)
+        return False
 
 
 def HandlerImage():
@@ -26,8 +28,9 @@ def HandlerImage():
             imageEN = cv2.imread(filePathEN)
             # 获取文件名中的卡号，即文件名前缀的后面几位字符
             cardNumEN = fileEN[len(filePrefixEN) : len(filePrefixEN) + fileCardNumLenEN]
-            # 若卡号不为正整数，则退出程序
-            CheckCardNum(filePathEN, cardNumEN)
+            # 若卡号不为正整数，则不处理该卡片，跳过
+            if not CheckCardNum(filePathEN, cardNumEN):
+                continue
 
             # 如果两张图片的卡号相同
             if cardNumCN == cardNumEN:
@@ -68,19 +71,19 @@ if __name__ == "__main__":
 
     # 目录前缀。
     dirSuffixCN = "BTC-02"
-    dirSuffixEN = "BT01-03"
-    dirSuffixDst = "BT-03"
+    dirSuffixEN = "BT04"
+    dirSuffixDst = "BT-04"
     # 图片名称前缀。用以匹配图片
-    filePrefixCN = "BTC2_BT3-"
-    filePrefixEN = "BT3-"
+    filePrefixCN = "BTC2_BT4-"
+    filePrefixEN = "BT4-"
     # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
     # 通常来说，预组的长度为2，扩展包的长度为3
     fileCardNumLenCN = 3
     fileCardNumLenEN = 3
 
     # 图片中的卡号中驯兽师、选项的起始和结束卡号
-    fileCardNumOfTamerStart = 93  # 驯兽师和选项大于等于该号
-    fileCardNumOfTamerEnd = 110  # 驯兽师和选项小于等于该号
+    fileCardNumOfTamerStart = 92  # 驯兽师和选项大于等于该号
+    fileCardNumOfTamerEnd = 112  # 驯兽师和选项小于等于该号
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
     fileCardNumOfDigimonStart = fileCardNumOfTamerStart - 1  # 数码宝贝小于等于该号
     fileCardNumOfDigimonEnd = fileCardNumOfTamerEnd + 1  # 数码宝贝大于等于该号
@@ -113,8 +116,9 @@ if __name__ == "__main__":
             imageCN = cv2.imread(filePathCN)
             # 获取文件名中的卡号，即文件名前缀的后面几位字符
             cardNumCN = fileCN[len(filePrefixCN) : len(filePrefixCN) + fileCardNumLenCN]
-            # 若卡号不为正整数，则退出程序
-            CheckCardNum(filePathCN, cardNumCN)
+            # 若卡号不为正整数，则不处理该卡片，
+            if not CheckCardNum(filePathCN, cardNumCN):
+                continue
 
             # 数码宝贝与选项卡、驯兽师卡需要删除的水印高度不一样，根据实际情况，选择要处理的图片
             if (
