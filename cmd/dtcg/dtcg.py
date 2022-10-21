@@ -62,28 +62,28 @@ if __name__ == "__main__":
 
     # 判断当前系统是 windows 还是 linux
     if os.name == "posix":
-        dirPrefix = "/mnt/e/Projects/dtcg/images"
+        dirPrefix = "/mnt/d/Projects/dtcg/images"
     elif os.name == "nt":
-        dirPrefix = "E:\Projects\dtcg\images"
+        dirPrefix = "D:\Projects\dtcg\images"
     else:
         print("未知操作系统")
         exit(1)
 
     # 目录前缀。
-    dirSuffixCN = "BTC-02"
-    dirSuffixEN = "BT04"
-    dirSuffixDst = "BT-04"
+    dirSuffixCN = "tmp"
+    dirSuffixEN = "P"
+    dirSuffixDst = "P"
     # 图片名称前缀。用以匹配图片
-    filePrefixCN = "BTC2_BT4-"
-    filePrefixEN = "BT4-"
+    filePrefixCN = "ch_P-"
+    filePrefixEN = "P-"
     # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
     # 通常来说，预组的长度为2，扩展包的长度为3
     fileCardNumLenCN = 3
     fileCardNumLenEN = 3
 
     # 图片中的卡号中驯兽师、选项的起始和结束卡号
-    fileCardNumOfTamerStart = 92  # 驯兽师和选项大于等于该号
-    fileCardNumOfTamerEnd = 112  # 驯兽师和选项小于等于该号
+    fileCardNumOfTamerStart = 35  # 驯兽师和选项大于等于该号
+    fileCardNumOfTamerEnd = 40  # 驯兽师和选项小于等于该号
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
     fileCardNumOfDigimonStart = fileCardNumOfTamerStart - 1  # 数码宝贝小于等于该号
     fileCardNumOfDigimonEnd = fileCardNumOfTamerEnd + 1  # 数码宝贝大于等于该号
