@@ -12,9 +12,9 @@ if __name__ == "__main__":
     # wideStart = int(32)  # 宽度起点
     # wideEnd = int(398)  # 宽度终点
 
-    CNFile = "BT2-055C.png"
-    ENFile = "BT2-055.png"
-    DstFile = "BT2-055-new.png"
+    CNFile = "images/dtcg_cn/BT2-055C.png"
+    ENFile = "images/dtcg_en/BT2-055.png"
+    DstFile = "images/dtcg_new/BT2-055-new.png"
 
     imageCN = cv2.imread(CNFile)
     imageEN = cv2.imread(ENFile)
