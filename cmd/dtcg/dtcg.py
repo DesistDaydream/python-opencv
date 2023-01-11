@@ -20,7 +20,7 @@ def HandlerImage():
         # 如果文件名以 cardNamePrefix 定义的卡名开头，并且卡号末尾为点，则开始处理图片
         if (
             fileEN.startswith(filePrefixEN)
-            and fileEN[len(filePrefixEN) + fileCardNumLenEN] == "."
+            # and fileEN[len(filePrefixEN) + fileCardNumLenEN] == "."
         ):
             # 英文图片的绝对路径
             filePathEN = os.path.join(dirPathEN, fileEN)
@@ -129,7 +129,8 @@ if __name__ == "__main__":
                     "开始处理中文图片。数码宝贝/数码蛋图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
                 )
                 highStart = int(265)  # 高度起点
-                highEnd = int(350)  # 高度终点(数码宝贝)
+                # highEnd = int(350)  # 高度终点(数码宝贝)
+                highEnd = int(337)  # 高度终点(数码宝贝，带合体进化的描述)
                 wideStart = int(32)  # 宽度起点
                 wideEnd = int(398)  # 宽度终点
                 # 大图的像素点
