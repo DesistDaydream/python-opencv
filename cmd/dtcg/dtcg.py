@@ -20,7 +20,7 @@ def HandlerImage():
         # 如果文件名以 cardNamePrefix 定义的卡名开头，并且卡号末尾为点，则开始处理图片
         if (
             fileEN.startswith(filePrefixEN)
-            # and fileEN[len(filePrefixEN) + fileCardNumLenEN] == "."
+            and fileEN[len(filePrefixEN) + fileCardNumLenEN] == "."
         ):
             # 英文图片的绝对路径
             filePathEN = os.path.join(dirPathEN, fileEN)
@@ -70,20 +70,20 @@ if __name__ == "__main__":
         exit(1)
 
     # 目录前缀。
-    dirSuffixCN = "STC-10"
-    dirSuffixEN = "ST-10"
-    dirSuffixDst = "ST-10"
+    dirSuffixCN = "BTC-04"
+    dirSuffixEN = "BT7"
+    dirSuffixDst = "BT-07"
     # 图片名称前缀。用以匹配图片
-    filePrefixCN = "ST10-"
-    filePrefixEN = "e_ST10_"
+    filePrefixCN = "ch_BT7-"
+    filePrefixEN = "BT7-"
     # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
     # 通常来说，预组的长度为2，扩展包的长度为3
-    fileCardNumLenCN = 2
-    fileCardNumLenEN = 2
+    fileCardNumLenCN = 3
+    fileCardNumLenEN = 3
 
     # 图片中的卡号中驯兽师、选项的起始和结束卡号
-    fileCardNumOfTamerStart = 14  # 驯兽师和选项大于等于该号
-    fileCardNumOfTamerEnd = 15  # 驯兽师和选项小于等于该号
+    fileCardNumOfTamerStart = 85  # 驯兽师和选项大于等于该号
+    fileCardNumOfTamerEnd = 110  # 驯兽师和选项小于等于该号
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
     fileCardNumOfDigimonStart = fileCardNumOfTamerStart - 1  # 数码宝贝小于等于该号
     fileCardNumOfDigimonEnd = fileCardNumOfTamerEnd + 1  # 数码宝贝大于等于该号
@@ -133,6 +133,8 @@ if __name__ == "__main__":
                 highEnd = int(337)  # 高度终点(数码宝贝，带合体进化的描述)
                 wideStart = int(32)  # 宽度起点
                 wideEnd = int(398)  # 宽度终点
+                # wideStart = int(15)  # 宽度起点(B站截图)
+                # wideEnd = int(415)  # 宽度终点(B站截图)
                 # 大图的像素点
                 # highStart = int(550)  # 高度起点
                 # highEnd = int(670)  # 高度终点(数码宝贝)
@@ -150,6 +152,8 @@ if __name__ == "__main__":
                 highEnd = int(330)  # 高度终点(驯兽师、选项)
                 wideStart = int(32)  # 宽度起点
                 wideEnd = int(398)  # 宽度终点
+                # wideStart = int(15)  # 宽度起点(B站截图)
+                # wideEnd = int(415)  # 宽度终点(B站截图)
                 HandlerImage()
             else:
                 logging.error("卡片编号【{}】不在处理范围内".format(cardNumCN))
