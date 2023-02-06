@@ -1,2 +1,6 @@
 
 images/dtcg*
+
+build/
+dist/
+*.spec
