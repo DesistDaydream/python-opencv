@@ -34,27 +34,17 @@ class CardsInfo:
 
         # 数码宝贝/数码蛋图片
         self.highStart: int  # 高度起点
-        # highEnd = int(350)  # 高度终点(数码宝贝)
         self.highEnd: int  # 高度终点(数码宝贝，带合体进化的描述)
         self.wideStart: int  # 宽度起点
         self.wideEnd: int  # 宽度终点
-        # wideStart = int(15)  # 宽度起点(B站截图)
-        # wideEnd = int(415)  # 宽度终点(B站截图)
-        # 大图的像素点
-        # highStart = int(550)  # 高度起点
-        # highEnd = int(670)  # 高度终点(数码宝贝)
-        # wideStart = int(69)  # 宽度起点
-        # wideEnd = int(799)  # 宽度终点
 
         # 驯兽师/选项卡图片
         self.highStart: int  # 高度起点
         self.highEnd: int  # 高度终点(驯兽师、选项)
         self.wideStart: int  # 宽度起点
         self.wideEnd: int  # 宽度终点
-        # wideStart = int(15)  # 宽度起点(B站截图)
-        # wideEnd = int(415)  # 宽度终点(B站截图)
 
-    def Gen(self, cardNumCN):
+    def GenFileEN(self, cardNumCN):
         # 处理英文图片文件名称
         fileEN = self.filePrefixEN + cardNumCN + self.fileSuffixEN
         # 如果是名称超过卡号字符长度，则说明是异画，需要替换异画后缀
@@ -70,7 +60,7 @@ class CardsInfo:
         imageCN: cv2.Mat,
         fileCN: str,
     ):
-        fileEN = self.Gen(cardNumCN)
+        fileEN = self.GenFileEN(cardNumCN)
         # 如果目录中存在的英文图片文件，则处理
         if fileEN in os.listdir(dirPathEN):
             # 英文图片的绝对路径
@@ -119,8 +109,10 @@ class CardsInfo:
 
                 # 数码宝贝与选项卡、驯兽师卡需要删除的水印高度不一样，根据实际情况，选择要处理的图片
                 if (
-                    int(cardNumCN) <= self.fileCardNumOfDigimonStart
-                    or int(cardNumCN) >= self.fileCardNumOfDigimonEnd
+                    int(cardNumCN[: self.fileCardNumLenCN])
+                    <= self.fileCardNumOfDigimonStart
+                    or int(cardNumCN[: self.fileCardNumLenCN])
+                    >= self.fileCardNumOfDigimonEnd
                 ):
                     logging.debug(
                         "开始处理中文图片。数码宝贝/数码蛋图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
@@ -142,8 +134,10 @@ class CardsInfo:
 
                     self.HandlerImage(dirPathEN, dirPathDst, cardNumCN, imageCN, fileCN)
                 elif (
-                    int(cardNumCN) >= self.fileCardNumOfTamerStart
-                    and int(cardNumCN) <= self.fileCardNumOfTamerEnd
+                    int(cardNumCN[: self.fileCardNumLenCN])
+                    >= self.fileCardNumOfTamerStart
+                    and int(cardNumCN[: self.fileCardNumLenCN])
+                    <= self.fileCardNumOfTamerEnd
                 ):
                     logging.debug(
                         "开始处理中文图片。驯兽师/选项卡图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
@@ -151,7 +145,7 @@ class CardsInfo:
 
                     # 驯兽师/选项卡图片
                     self.highStart: int = 265  # 高度起点
-                    self.highEnd: int = 330  # 高度终点(驯兽师、选项)
+                    self.highEnd: int = 329  # 高度终点(驯兽师、选项)
                     self.wideStart: int = 32  # 宽度起点
                     self.wideEnd: int = 398  # 宽度终点
                     # wideStart = int(15)  # 宽度起点(B站截图)
