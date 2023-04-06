@@ -19,6 +19,7 @@ class CardsInfo:
         self.fileSuffixCN: str = ".png"
         self.fileSuffixEN: str = "_dummy.jpg"
         # 异画图片名称后缀。用以匹配图片
+        # TODO: 如果有多张异画怎么办呢？多张异画的话，每种异画的后缀是不一样的。
         self.fileArtSuffixCN: str = "_01"
         self.fileArtSuffixEN: str = "P"
         # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
@@ -32,6 +33,14 @@ class CardsInfo:
         self.fileCardNumOfDigimonStart: int = self.fileCardNumOfTamerStart - 1
         self.fileCardNumOfDigimonEnd: int = self.fileCardNumOfTamerEnd + 1
 
+        # 图片存放路径
+        # 需要将裁剪的图像合并到的图像的路径
+        self.dirPathCN: str
+        # 需要裁剪的源图像路径
+        self.dirPathEN: str
+        # 合成之后的图像的保存路径
+        self.dirPathDst: str
+
         # 数码宝贝/数码蛋图片
         self.highStart: int  # 高度起点
         self.highEnd: int  # 高度终点(数码宝贝，带合体进化的描述)
@@ -43,6 +52,35 @@ class CardsInfo:
         self.highEnd: int  # 高度终点(驯兽师、选项)
         self.wideStart: int  # 宽度起点
         self.wideEnd: int  # 宽度终点
+
+        # TODO: 我想加个卡牌类型的数据，然后能自动获取这个图片的卡牌类型，然后根据类型来决定裁剪的区域。但是如何获取到卡牌的类型呢？
+
+    def SetWatermarkAreaCoordinates(self, cardType):
+        if cardType == "digimon" or cardType == "digi-egg":
+            # 数码宝贝/数码蛋图片
+            self.highStart: int = 265  # 高度起点
+            # highEnd = int(350)  # 高度终点(数码宝贝)
+            self.highEnd: int = 337  # 高度终点(数码宝贝，带合体进化的描述)
+            self.wideStart: int = 32  # 宽度起点
+            self.wideEnd: int = 398  # 宽度终点
+        elif cardType == "tamer" or cardType == "option":
+            # 驯兽师/选项卡图片
+            self.highStart: int = 265  # 高度起点
+            self.highEnd: int = 329  # 高度终点(驯兽师、选项)
+            self.wideStart: int = 32  # 宽度起点
+            self.wideEnd: int = 398  # 宽度终点
+
+    def GenDirPath(self, dirPrefix):
+        # 需要将裁剪的图像合并到的图像的路径
+        self.dirPathCN = os.path.join(dirPrefix, "cn", self.dirPrefixCN)
+        # 需要裁剪的源图像路径
+        self.dirPathEN = os.path.join(dirPrefix, "en", self.dirPrefixEN)
+        # 合成之后的图像的保存路径
+        self.dirPathDst = os.path.join(dirPrefix, "cn-prefect", self.dirPrefixDst)
+
+        logging.info("中文图片路径: 【{}】".format(self.dirPathCN))
+        logging.info("英文图片路径: 【{}】".format(self.dirPathEN))
+        logging.info("合成图片路径: 【{}】".format(self.dirPathDst))
 
     def GenFileEN(self, cardNumCN):
         # 处理英文图片文件名称
@@ -88,18 +126,16 @@ class CardsInfo:
             # 将 imageCN 保存到 dirSuffixDst 中
             cv2.imwrite(filePathDst, imageCN)
 
-    def GenNeededHandleImage(self, dirPathCN: str, dirPathEN: str, dirPathDst: str):
-        # 逐一处理 dirPathCN 中的图片
-        filesCN = os.listdir(dirPathCN)
+    def GenNeededHandleImage(self):
         logging.info("开始逐一处理【{}】开头的图片".format(self.filePrefixCN))
-        logging.info("中文图片路径: 【{}】".format(dirPathCN))
-        logging.info("英文图片路径: 【{}】".format(dirPathEN))
-        logging.info("合成图片路径: 【{}】".format(dirPathDst))
+
+        # 逐一处理 dirPathCN 中的图片
+        filesCN = os.listdir(self.dirPathCN)
         for fileCN in filesCN:
             # 如果图片的名称以 filePrefixCN 定义的卡名开头，则处理该图片
             if fileCN.startswith(self.filePrefixCN):
                 # 中文图片的绝对路径
-                filePathCN = os.path.join(dirPathCN, fileCN)
+                filePathCN = os.path.join(self.dirPathCN, fileCN)
                 # 读取 filePrefixCN 定义的卡名开头的图像
                 imageCN = cv2.imread(filePathCN)
                 # 获取文件名中的卡号
@@ -118,21 +154,11 @@ class CardsInfo:
                         "开始处理中文图片。数码宝贝/数码蛋图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
                     )
 
-                    # 数码宝贝/数码蛋图片
-                    self.highStart: int = 265  # 高度起点
-                    # highEnd = int(350)  # 高度终点(数码宝贝)
-                    self.highEnd: int = 337  # 高度终点(数码宝贝，带合体进化的描述)
-                    self.wideStart: int = 32  # 宽度起点
-                    self.wideEnd: int = 398  # 宽度终点
-                    # wideStart = int(15)  # 宽度起点(B站截图)
-                    # wideEnd = int(415)  # 宽度终点(B站截图)
-                    # 大图的像素点
-                    # highStart = int(550)  # 高度起点
-                    # highEnd = int(670)  # 高度终点(数码宝贝)
-                    # wideStart = int(69)  # 宽度起点
-                    # wideEnd = int(799)  # 宽度终点
+                    self.SetWatermarkAreaCoordinates("digimon")
 
-                    self.HandlerImage(dirPathEN, dirPathDst, cardNumCN, imageCN, fileCN)
+                    self.HandlerImage(
+                        self.dirPathEN, self.dirPathDst, cardNumCN, imageCN, fileCN
+                    )
                 elif (
                     int(cardNumCN[: self.fileCardNumLenCN])
                     >= self.fileCardNumOfTamerStart
@@ -143,15 +169,11 @@ class CardsInfo:
                         "开始处理中文图片。驯兽师/选项卡图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
                     )
 
-                    # 驯兽师/选项卡图片
-                    self.highStart: int = 265  # 高度起点
-                    self.highEnd: int = 329  # 高度终点(驯兽师、选项)
-                    self.wideStart: int = 32  # 宽度起点
-                    self.wideEnd: int = 398  # 宽度终点
-                    # wideStart = int(15)  # 宽度起点(B站截图)
-                    # wideEnd = int(415)  # 宽度终点(B站截图)
+                    self.SetWatermarkAreaCoordinates("tamer")
 
-                    self.HandlerImage(dirPathEN, dirPathDst, cardNumCN, imageCN, fileCN)
+                    self.HandlerImage(
+                        self.dirPathEN, self.dirPathDst, cardNumCN, imageCN, fileCN
+                    )
                 else:
                     logging.error("卡片编号【{}】不在处理范围内".format(cardNumCN))
             else:
@@ -161,22 +183,9 @@ class CardsInfo:
 def run(dirPrefix: str):
     cardsInfo = CardsInfo()
 
-    # 需要将裁剪的图像合并到的图像的路径
-    dirPathCN = os.path.join(dirPrefix, "cn", cardsInfo.dirPrefixCN)
-    # 需要裁剪的源图像路径
-    dirPathEN = os.path.join(dirPrefix, "en", cardsInfo.dirPrefixEN)
-    # 合成之后的图像的保存路径
-    dirPathDst = os.path.join(dirPrefix, "cn-prefect", cardsInfo.dirPrefixDst)
+    cardsInfo.GenDirPath(dirPrefix)
 
-    cardsInfo.GenNeededHandleImage(dirPathCN, dirPathEN, dirPathDst)
-
-
-def CheckCardNum(filePath, cardNum) -> bool:
-    if cardNum.isdigit():
-        return True
-    else:
-        logging.error("{} 的卡号 {} 不为正整数".format(filePath, cardNum))
-        return False
+    cardsInfo.GenNeededHandleImage()
 
 
 if __name__ == "__main__":
