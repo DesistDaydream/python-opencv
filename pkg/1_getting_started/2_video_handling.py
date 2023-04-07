@@ -112,8 +112,8 @@ def ViedeProperty(cap):
 
     # 设置视频的属性
     try:
-        ret = cap.set(cv2.CAP_PROP_FRAME_WIDTH, cap.get(3) * 2)
-        ret = cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cap.get(4) * 2)
+        ret = cap.set(cv2.CAP_PROP_FRAME_WIDTH, cap.get(3) / 2)
+        ret = cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cap.get(4) / 2)
         ret = cap.set(5, 60)
     except Exception as err:
         print("属性设置失败: ", err)
