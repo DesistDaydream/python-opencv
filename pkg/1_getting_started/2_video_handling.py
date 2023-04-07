@@ -8,8 +8,8 @@ import cv2
 def CapturePictureFromCamera(cap):
     # 读取当前帧，即拍照。
     # 返回值是一个 bool 和一个 cv::Mat 对象，ret 为 True 时表示读取成功
-    ret, frame = cap.read()
-    if not ret:
+    retval, frame = cap.read()
+    if not retval:
         print("Can't receive frame (stream end?). Exiting ...")
         exit()
 
@@ -52,7 +52,6 @@ def SavingVideo(cap):
     # 除了 while True 的形式，还可以通过
     while cap.isOpened():
         ret, frame = cap.read()
-
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
             break
@@ -71,10 +70,9 @@ def SavingVideo(cap):
 def PlayingVideoFromFile():
     cap = cv2.VideoCapture("output.avi")
     while cap.isOpened():
-        ret, frame = cap.read()
-
-        # if frame is read correctly ret is True
-        if not ret:
+        retval, frame = cap.read()
+        # 如果正确读取帧，则 retval 为真
+        if not retval:
             print("Can't receive frame (stream end?). Exiting ...")
             break
 
@@ -131,6 +129,10 @@ def ViedeProperty(cap):
 
 
 if __name__ == "__main__":
+    # OpenCV 中处理视频最基本的类是 VideoCapture 和 VideoWriter。
+    # VideoCapture 用于从摄像头或者视频文件中获取视频。
+    # VideoWriter 用于将视频保存到文件中。
+
     # 创建 VideoCapture 对象。
     # 参数是设备索引号，如果只有一个摄像头，那么索引号就是 0
     # 也可以是一个文件名，这样就可以播放视频文件
