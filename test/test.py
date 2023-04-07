@@ -1,17 +1,31 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+import cv2 as cv
 
-import os
-import re
+cap = cv.VideoCapture(0)
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
 
+cap.open(0)
 
-def match_files(dir_a: str, dir_b: str, cardNamePrefix: str):
-    for filename_a in os.listdir(dir_a):
-        new_name = filename_a.replace(cardNamePrefix, "").replace(".png", "")
-        print(new_name)
+for i in range(18):
+    print(cap.get(i))
 
+cap.set(3, 1024)
+cap.set(4, 768)
 
-dir_a = "D:\\Projects\\dtcg\\images\\cn\\EXC-01"
-dir_b = "D:\\Projects\\dtcg\\images\\en\\EX2"
-# Replace AA and BB with your directory names
-match_files(dir_a, dir_b, "EX2-")
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    # if frame is read correctly ret is True
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+
+    # Display the resulting frame
+    cv.imshow("frame", frame)
+    if cv.waitKey(1) == ord("q"):
+        break
+
+# When everything done, release the capture
+cap.release()
+cv.destroyAllWindows()
