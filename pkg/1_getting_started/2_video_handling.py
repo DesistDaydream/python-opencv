@@ -46,6 +46,7 @@ def SavingVideo(cap):
 
     # 使用 FOURCC 创建 VideoWriter 对象。
     # 第一个参数是输出文件名，第二个参数是编解码器，第三个参数是帧率，第四个参数是帧大小
+    # VideoWriter 对象在 IDE 中无法追踪到其属性和方法，可以从 https://docs.opencv.org/4.x/dd/d9e/classcv_1_1VideoWriter.html 中查看
     out = cv2.VideoWriter("output.avi", fourcc, 20.0, (640, 480))
 
     # 除了 while True 的形式，还可以通过
@@ -130,10 +131,10 @@ def ViedeProperty(cap):
 
 
 if __name__ == "__main__":
-    cap: cv2.VideoCapture
     # 创建 VideoCapture 对象。
     # 参数是设备索引号，如果只有一个摄像头，那么索引号就是 0
     # 也可以是一个文件名，这样就可以播放视频文件
+    # VideoCapture 对象在 IDE 中无法追踪到其属性和方法，可以从 https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html 这里手动查看。
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print("Cannot open camera")
