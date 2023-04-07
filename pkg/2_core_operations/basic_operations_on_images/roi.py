@@ -5,6 +5,8 @@ import cv2
 # if __name__ == "__main__":
 # Region Of Interest(感兴趣的区域，简称 ROI) 就是我们从图像中选择一个图像区域，这个区域是图像分析所关注的焦点。
 # 我们圈定这个区域，那么我们要处理的图像就从大图像变为一个小图像区域了，这样以便进行进一步处理，可以大大减小处理时间。
+
+# 读取图片
 img = cv2.imread("images/messi5.jpg")
 
 print(img.shape)
