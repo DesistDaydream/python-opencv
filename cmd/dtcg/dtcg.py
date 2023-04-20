@@ -8,6 +8,37 @@ from dataclasses import dataclass
 
 
 @dataclass
+class WatermarkInfo:
+    highStart: int
+    highEnd: int
+    wideStart: int
+    wideEnd: int
+
+
+def SetWatermarkAreaCoordinates(cardType) -> WatermarkInfo:
+    if cardType == "digimon" or cardType == "digi-egg":
+        # 数码宝贝/数码蛋图片
+        highStart: int = 265  # 高度起点
+        # highEnd = int(350)  # 高度终点(数码宝贝)
+        highEnd: int = 337  # 高度终点(数码宝贝，带合体进化的描述)
+        wideStart: int = 32  # 宽度起点
+        wideEnd: int = 398  # 宽度终点
+
+        return WatermarkInfo(highStart, highEnd, wideStart, wideEnd)
+    elif cardType == "tamer" or cardType == "option":
+        # 驯兽师/选项卡图片
+        highStart: int = 265  # 高度起点
+        highEnd: int = 329  # 高度终点(驯兽师、选项)
+        wideStart: int = 32  # 宽度起点
+        wideEnd: int = 398  # 宽度终点
+
+        return WatermarkInfo(highStart, highEnd, wideStart, wideEnd)
+
+    print("请指定卡牌类型！")
+    exit(1)
+
+
+@dataclass
 class CardsInfo:
     # 图片存放路径
     # 需要将裁剪的图像合并到的图像的路径
@@ -17,26 +48,20 @@ class CardsInfo:
     # 合成之后的图像的保存路径
     dirPathDst: str
 
-    # 图片中的水印区域坐标
-    highStart: int  # 高度起点
-    highEnd: int  # 高度终点
-    wideStart: int  # 宽度起点
-    wideEnd: int  # 宽度终点
-
     # 目录前缀。
     dirPrefixCN: str = "BTC-02"
     dirPrefixEN: str = "BT03"
     dirPrefixDst: str = "BT-03"
-    # 图片名称前缀。用以匹配图片
+    # 图片名称前缀。用以匹配图片以及生成卡牌编号
     filePrefixCN: str = "BT3-"
     filePrefixEN: str = "BT3-"
-    # 图片名称后缀。用以匹配图片
+    # 图片名称后缀。用以匹配图片以及生成卡牌编号
     fileSuffixCN: str = ".png"
     fileSuffixEN: str = ".png"
     # 异画图片名称后缀。用以匹配图片
     # TODO: 如果有多张异画怎么办呢？多张异画的话，每种异画的后缀是不一样的。
-    fileArtSuffixCN: str = "_P1"
-    fileArtSuffixEN: str = "_P1"
+    fileArtSuffixCN: str = "_P"
+    fileArtSuffixEN: str = "_P"
     # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
     # 通常来说，预组的长度为2，扩展包的长度为3
     fileCardNumLenCN: int = 3
@@ -50,21 +75,6 @@ class CardsInfo:
 
     # TODO: 我想加个卡牌类型的数据，然后能自动获取这个图片的卡牌类型，然后根据类型来决定裁剪的区域。但是如何获取到卡牌的类型呢？
 
-    def SetWatermarkAreaCoordinates(self, cardType):
-        if cardType == "digimon" or cardType == "digi-egg":
-            # 数码宝贝/数码蛋图片
-            self.highStart: int = 265  # 高度起点
-            # highEnd = int(350)  # 高度终点(数码宝贝)
-            self.highEnd: int = 337  # 高度终点(数码宝贝，带合体进化的描述)
-            self.wideStart: int = 32  # 宽度起点
-            self.wideEnd: int = 398  # 宽度终点
-        elif cardType == "tamer" or cardType == "option":
-            # 驯兽师/选项卡图片
-            self.highStart: int = 265  # 高度起点
-            self.highEnd: int = 329  # 高度终点(驯兽师、选项)
-            self.wideStart: int = 32  # 宽度起点
-            self.wideEnd: int = 398  # 宽度终点
-
     def GenDirPath(self, dirPrefix):
         # 需要将裁剪的图像合并到的图像的路径
         self.dirPathCN = os.path.join(dirPrefix, "cn", self.dirPrefixCN)
@@ -77,6 +87,7 @@ class CardsInfo:
         logging.info("英文图片路径: 【{}】".format(self.dirPathEN))
         logging.info("合成图片路径: 【{}】".format(self.dirPathDst))
 
+    # 生成英文图片文件名称
     def GenFileEN(self, cardNumCN):
         # 处理英文图片文件名称
         fileEN: str = self.filePrefixEN + cardNumCN + self.fileSuffixEN
@@ -85,6 +96,7 @@ class CardsInfo:
             fileEN = fileEN.replace(self.fileArtSuffixCN, self.fileArtSuffixEN)
         return fileEN
 
+    # 处理图片
     def HandlerImage(
         self,
         dirPathEN: str,
@@ -92,6 +104,7 @@ class CardsInfo:
         cardNumCN: str,
         imageCN: cv2.Mat,
         fileCN: str,
+        watermarkInfo: WatermarkInfo,
     ):
         fileEN = self.GenFileEN(cardNumCN)
         # 如果目录中存在的英文图片文件，则处理
@@ -104,11 +117,11 @@ class CardsInfo:
             logging.debug("开始处理英文图片: {},卡片编号: {}".format(filePathEN, cardNumCN))
             # 取出 imageEN 中指定高度和宽度的部分，并覆盖到 imageCN 中
             imageCN[
-                self.highStart : self.highEnd,
-                self.wideStart : self.wideEnd,
+                watermarkInfo.highStart : watermarkInfo.highEnd,
+                watermarkInfo.wideStart : watermarkInfo.wideEnd,
             ] = imageEN[
-                self.highStart : self.highEnd,
-                self.wideStart : self.wideEnd,
+                watermarkInfo.highStart : watermarkInfo.highEnd,
+                watermarkInfo.wideStart : watermarkInfo.wideEnd,
             ]
 
             # 处理后图片的绝对路径
@@ -121,6 +134,7 @@ class CardsInfo:
             # 将 imageCN 保存到 dirSuffixDst 中
             cv2.imwrite(filePathDst, imageCN)
 
+    # 生成需要处理的中文图片，并逐一处理
     def GenNeededHandleImage(self):
         logging.info("开始逐一处理【{}】开头的图片".format(self.filePrefixCN))
 
@@ -149,10 +163,17 @@ class CardsInfo:
                         "开始处理中文图片。数码宝贝/数码蛋图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
                     )
 
-                    self.SetWatermarkAreaCoordinates("digimon")
+                    watermarkInfo: WatermarkInfo = SetWatermarkAreaCoordinates(
+                        "digimon"
+                    )
 
                     self.HandlerImage(
-                        self.dirPathEN, self.dirPathDst, cardNumCN, imageCN, fileCN
+                        self.dirPathEN,
+                        self.dirPathDst,
+                        cardNumCN,
+                        imageCN,
+                        fileCN,
+                        watermarkInfo,
                     )
                 elif (
                     int(cardNumCN[: self.fileCardNumLenCN])
@@ -164,10 +185,15 @@ class CardsInfo:
                         "开始处理中文图片。驯兽师/选项卡图片: {},卡片编号: {}".format(filePathCN, cardNumCN)
                     )
 
-                    self.SetWatermarkAreaCoordinates("tamer")
+                    watermarkInfo: WatermarkInfo = SetWatermarkAreaCoordinates("tamer")
 
                     self.HandlerImage(
-                        self.dirPathEN, self.dirPathDst, cardNumCN, imageCN, fileCN
+                        self.dirPathEN,
+                        self.dirPathDst,
+                        cardNumCN,
+                        imageCN,
+                        fileCN,
+                        watermarkInfo,
                     )
                 else:
                     logging.error("卡片编号【{}】不在处理范围内".format(cardNumCN))
@@ -176,7 +202,7 @@ class CardsInfo:
 
 
 def run(dirPrefix: str):
-    cardsInfo = CardsInfo("dirPathCN", "dirPathEN", "dirPathDst", 0, 0, 0, 0)
+    cardsInfo = CardsInfo("", "", "")
 
     cardsInfo.GenDirPath(dirPrefix)
 
