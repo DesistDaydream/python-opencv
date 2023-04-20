@@ -3,57 +3,52 @@
 import os
 import cv2
 import logging
-import re
+
+from dataclasses import dataclass
 
 
+@dataclass
 class CardsInfo:
-    def __init__(self) -> None:
-        # 目录前缀。
-        self.dirPrefixCN: str = "EXC-01"
-        self.dirPrefixEN: str = "EX2"
-        self.dirPrefixDst: str = "EX-02"
-        # 图片名称前缀。用以匹配图片
-        self.filePrefixCN: str = "EX2-"
-        self.filePrefixEN: str = "EX2-"
-        # 图片名称后缀。用以匹配图片
-        self.fileSuffixCN: str = ".png"
-        self.fileSuffixEN: str = "_dummy.jpg"
-        # 异画图片名称后缀。用以匹配图片
-        # TODO: 如果有多张异画怎么办呢？多张异画的话，每种异画的后缀是不一样的。
-        self.fileArtSuffixCN: str = "_01"
-        self.fileArtSuffixEN: str = "P"
-        # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
-        # 通常来说，预组的长度为2，扩展包的长度为3
-        self.fileCardNumLenCN: int = 3
-        self.fileCardNumLenEN: int = 3
-        # 图片中的卡号中驯兽师、选项的起始和结束卡号
-        self.fileCardNumOfTamerStart: int = 56
-        self.fileCardNumOfTamerEnd: int = 72
-        # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
-        self.fileCardNumOfDigimonStart: int = self.fileCardNumOfTamerStart - 1
-        self.fileCardNumOfDigimonEnd: int = self.fileCardNumOfTamerEnd + 1
+    # 图片存放路径
+    # 需要将裁剪的图像合并到的图像的路径
+    dirPathCN: str
+    # 需要裁剪的源图像路径
+    dirPathEN: str
+    # 合成之后的图像的保存路径
+    dirPathDst: str
 
-        # 图片存放路径
-        # 需要将裁剪的图像合并到的图像的路径
-        self.dirPathCN: str
-        # 需要裁剪的源图像路径
-        self.dirPathEN: str
-        # 合成之后的图像的保存路径
-        self.dirPathDst: str
+    # 图片中的水印区域坐标
+    highStart: int  # 高度起点
+    highEnd: int  # 高度终点
+    wideStart: int  # 宽度起点
+    wideEnd: int  # 宽度终点
 
-        # 数码宝贝/数码蛋图片
-        self.highStart: int  # 高度起点
-        self.highEnd: int  # 高度终点(数码宝贝，带合体进化的描述)
-        self.wideStart: int  # 宽度起点
-        self.wideEnd: int  # 宽度终点
+    # 目录前缀。
+    dirPrefixCN: str = "BTC-02"
+    dirPrefixEN: str = "BT03"
+    dirPrefixDst: str = "BT-03"
+    # 图片名称前缀。用以匹配图片
+    filePrefixCN: str = "BT3-"
+    filePrefixEN: str = "BT3-"
+    # 图片名称后缀。用以匹配图片
+    fileSuffixCN: str = ".png"
+    fileSuffixEN: str = ".png"
+    # 异画图片名称后缀。用以匹配图片
+    # TODO: 如果有多张异画怎么办呢？多张异画的话，每种异画的后缀是不一样的。
+    fileArtSuffixCN: str = "_P1"
+    fileArtSuffixEN: str = "_P1"
+    # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
+    # 通常来说，预组的长度为2，扩展包的长度为3
+    fileCardNumLenCN: int = 3
+    fileCardNumLenEN: int = 3
+    # 图片中的卡号中驯兽师、选项的起始和结束卡号
+    fileCardNumOfTamerStart: int = 93
+    fileCardNumOfTamerEnd: int = 110
+    # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
+    fileCardNumOfDigimonStart: int = fileCardNumOfTamerStart - 1
+    fileCardNumOfDigimonEnd: int = fileCardNumOfTamerEnd + 1
 
-        # 驯兽师/选项卡图片
-        self.highStart: int  # 高度起点
-        self.highEnd: int  # 高度终点(驯兽师、选项)
-        self.wideStart: int  # 宽度起点
-        self.wideEnd: int  # 宽度终点
-
-        # TODO: 我想加个卡牌类型的数据，然后能自动获取这个图片的卡牌类型，然后根据类型来决定裁剪的区域。但是如何获取到卡牌的类型呢？
+    # TODO: 我想加个卡牌类型的数据，然后能自动获取这个图片的卡牌类型，然后根据类型来决定裁剪的区域。但是如何获取到卡牌的类型呢？
 
     def SetWatermarkAreaCoordinates(self, cardType):
         if cardType == "digimon" or cardType == "digi-egg":
@@ -84,7 +79,7 @@ class CardsInfo:
 
     def GenFileEN(self, cardNumCN):
         # 处理英文图片文件名称
-        fileEN = self.filePrefixEN + cardNumCN + self.fileSuffixEN
+        fileEN: str = self.filePrefixEN + cardNumCN + self.fileSuffixEN
         # 如果是名称超过卡号字符长度，则说明是异画，需要替换异画后缀
         if len(cardNumCN) > self.fileCardNumLenCN:
             fileEN = fileEN.replace(self.fileArtSuffixCN, self.fileArtSuffixEN)
@@ -181,7 +176,7 @@ class CardsInfo:
 
 
 def run(dirPrefix: str):
-    cardsInfo = CardsInfo()
+    cardsInfo = CardsInfo("dirPathCN", "dirPathEN", "dirPathDst", 0, 0, 0, 0)
 
     cardsInfo.GenDirPath(dirPrefix)
 
