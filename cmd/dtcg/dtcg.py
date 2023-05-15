@@ -20,7 +20,7 @@ def SetWatermarkAreaCoordinates(cardType) -> WatermarkInfo:
         # 数码宝贝/数码蛋图片
         highStart: int = 265  # 高度起点
         # highEnd = int(350)  # 高度终点(数码宝贝)
-        highEnd: int = 337  # 高度终点(数码宝贝，带合体进化的描述)
+        highEnd: int = 332  # 高度终点(数码宝贝，带合体进化的描述)
         wideStart: int = 32  # 宽度起点
         wideEnd: int = 398  # 宽度终点
 
@@ -49,25 +49,25 @@ class CardsInfo:
     dirPathDst: str
 
     # 目录前缀。
-    dirPrefixCN: str = "BTC-02"
-    dirPrefixEN: str = "BT03"
-    dirPrefixDst: str = "BT-03"
+    dirPrefixCN: str = "BTC-05"
+    dirPrefixEN: str = "BT10"
+    dirPrefixDst: str = "BT-10"
     # 图片名称前缀。用以匹配图片以及生成卡牌编号
-    filePrefixCN: str = "BT3-"
-    filePrefixEN: str = "BT3-"
+    filePrefixCN: str = "BT10-"
+    filePrefixEN: str = "e_BT10-"
     # 图片名称后缀。用以匹配图片以及生成卡牌编号
     fileSuffixCN: str = ".png"
-    fileSuffixEN: str = ".png"
+    fileSuffixEN: str = "_D.png"
     # 异画图片名称后缀。用以匹配图片
     # TODO: 如果有多张异画怎么办呢？多张异画的话，每种异画的后缀是不一样的。
-    fileArtSuffixCN: str = "_P"
-    fileArtSuffixEN: str = "_P"
+    fileArtSuffixCN: str = "_01"
+    fileArtSuffixEN: str = "p"
     # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
     # 通常来说，预组的长度为2，扩展包的长度为3
     fileCardNumLenCN: int = 3
     fileCardNumLenEN: int = 3
     # 图片中的卡号中驯兽师、选项的起始和结束卡号
-    fileCardNumOfTamerStart: int = 93
+    fileCardNumOfTamerStart: int = 87
     fileCardNumOfTamerEnd: int = 110
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
     fileCardNumOfDigimonStart: int = fileCardNumOfTamerStart - 1
