@@ -1,5 +1,8 @@
 {
-  "python.formatting.provider": "black",
+  "python.formatting.provider": "none",
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "python.analysis.typeCheckingMode": "basic",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
 }
