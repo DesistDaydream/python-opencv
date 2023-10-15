@@ -21,9 +21,9 @@ def run(serial: str):
     # wideStart: int = 32  # 宽度起点
     # wideEnd: int = 398  # 宽度终点
 
-    cnFile = "cn/BTC-06/{}.png".format(serial)
-    jpFile = "jp/BT-12/{}.png".format(serial)
-    dstFile = "cn-prefect/BT-12/{}.png".format(serial)
+    cnFile = "cn/BTC-07/{}.png".format(serial)
+    jpFile = "en/EX-04/{}.png".format(serial)
+    dstFile = "cn-prefect/EX-04/{}.png".format(serial)
     # cnFile = "cn/BTC-05/{}_01.png".format(serial)
     # jpFile = "jp_hk/BT-10/{}_P1.png".format(serial)
     # dstFile = "cn-prefect/BT-10/{}_01.png".format(serial)

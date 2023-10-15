@@ -49,26 +49,26 @@ class CardsInfo:
     dirPathDst: str
 
     # 目录前缀。
-    dirPrefixCN: str = "BTC-06"
-    dirPrefixEN: str = "BT-12"
-    dirPrefixDst: str = "BT-12"
+    dirPrefixCN: str = "BTC-07"
+    dirPrefixEN: str = "RB-01"
+    dirPrefixDst: str = "RB-01"
     # 图片名称前缀。用以匹配图片以及生成卡牌编号
-    filePrefixCN: str = "BT12-"
-    filePrefixEN: str = "BT12-"
+    filePrefixCN: str = "RB1-"
+    filePrefixEN: str = "RB1-"
     # 图片名称后缀。用以匹配图片以及生成卡牌编号
     fileSuffixCN: str = ".png"
     fileSuffixEN: str = ".png"
     # 异画图片名称后缀。用以匹配图片
     # TODO: 如果有多张异画怎么办呢？多张异画的话，每种异画的后缀是不一样的。
-    fileArtSuffixCN: str = "_P2"
-    fileArtSuffixEN: str = "P2"
+    fileArtSuffixCN: str = "_P1"
+    fileArtSuffixEN: str = "_P1"
     # 图片中卡号的字符长度，指的是中文/英文的图片名称前缀后面的数字
     # 通常来说，预组的长度为2，扩展包的长度为3
     fileCardNumLenCN: int = 3
     fileCardNumLenEN: int = 3
     # 图片中的卡号中驯兽师、选项的起始和结束卡号
-    fileCardNumOfTamerStart: int = 87
-    fileCardNumOfTamerEnd: int = 110
+    fileCardNumOfTamerStart: int = 32
+    fileCardNumOfTamerEnd: int = 35
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
     fileCardNumOfDigimonStart: int = fileCardNumOfTamerStart - 1
     fileCardNumOfDigimonEnd: int = fileCardNumOfTamerEnd + 1
