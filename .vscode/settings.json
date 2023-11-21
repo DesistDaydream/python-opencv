@@ -1,4 +1,5 @@
 {
+  "explorer.autoReveal": false,
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "python.analysis.typeCheckingMode": "basic",
   "[python]": {

@@ -10,20 +10,20 @@ import click
 @click.option("--serial", prompt="卡牌编号", default="BT10-009", help="卡牌编号")
 def run(serial: str):
     # 数码宝贝/数码蛋图片
-    highStart: int = 265  # 高度起点
-    highEnd: int = 332  # 高度终点(数码宝贝，带合体进化的描述)
-    wideStart: int = 30  # 宽度起点
-    wideEnd: int = 400  # 宽度终点
+    # highStart: int = 265  # 高度起点
+    # highEnd: int = 332  # 高度终点(数码宝贝，带合体进化的描述)
+    # wideStart: int = 30  # 宽度起点
+    # wideEnd: int = 400  # 宽度终点
 
     # 驯兽师/选项卡图片
-    # highStart: int = 265  # 高度起点
-    # highEnd: int = 329  # 高度终点(驯兽师、选项)
-    # wideStart: int = 32  # 宽度起点
-    # wideEnd: int = 398  # 宽度终点
+    highStart: int = 265  # 高度起点
+    highEnd: int = 330  # 高度终点(驯兽师、选项)
+    wideStart: int = 32  # 宽度起点
+    wideEnd: int = 398  # 宽度终点
 
-    cnFile = "cn/BTC-07/{}.png".format(serial)
-    jpFile = "en/EX-04/{}.png".format(serial)
-    dstFile = "cn-prefect/EX-04/{}.png".format(serial)
+    cnFile = "cn/P/{}.png".format(serial)
+    jpFile = "en/P/{}.png".format(serial)
+    dstFile = "cn-prefect/P/{}.png".format(serial)
     # cnFile = "cn/BTC-05/{}_01.png".format(serial)
     # jpFile = "jp_hk/BT-10/{}_P1.png".format(serial)
     # dstFile = "cn-prefect/BT-10/{}_01.png".format(serial)

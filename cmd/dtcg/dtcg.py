@@ -3,6 +3,7 @@
 import os
 import cv2
 import logging
+from typing import Union
 
 from dataclasses import dataclass
 
