@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 import cv2
 
-# 核心操作-图像的基本操作：https://docs.opencv.org/4.x/d3/df2/tutorial_py_basic_ops.html
+# 教程-核心操作-图像的基本操作：
+# https://docs.opencv.org/4.x/d3/df2/tutorial_py_basic_ops.html
 
 
 # 访问图像的属性

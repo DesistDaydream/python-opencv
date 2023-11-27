@@ -3,7 +3,9 @@
 import cv2 as cv
 import os
 
-# 核心操作-图像的算数运算：https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
+# 教程-核心操作-图像的算数运算：
+# https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
+
 
 # 图像混合
 def ImageBlending():

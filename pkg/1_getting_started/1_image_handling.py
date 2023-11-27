@@ -4,7 +4,7 @@ import cv2
 # 注释说说明的函数调用都是指 C++ 的函数，OpenCV 是用 C++ 编写的，而 OpenCV-Python 只是用 Python 代码调用 C++ 的函数
 
 
-# OpenCV 中的 GUI 之 图像入门：https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html
+# 教程-OpenCV 中的 GUI 之 图像入门：https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html
 def GUIGettingStartedWithImages():
     # 调用 cv::imread 函数读取图片，图片的数据将会存储在 cv::Mat 对象。
     # 说白了就是实例化一个 cv::Mat 对象，所有对图片的操作其实都是在操作这个对象
