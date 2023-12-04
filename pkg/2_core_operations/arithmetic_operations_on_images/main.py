@@ -42,6 +42,8 @@ def BitwiseOperations():
     # 这里的 COLOR_BGR2GRAY 表示将图像从 BGR 颜色空间转换为 GRAY(灰度) 颜色空间
     img2gray = cv.cvtColor(logo, cv.COLOR_BGR2GRAY)
     # cv.shteshold() 函数可以将图像二值化，即将图像的每个像素的值转换为 0 或 255 。https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57
+    # 它是将图像像素值大于某个阈值的像素值设置为最大值（通常是白色），小于等于阈值的像素值设置为最小值（通常是黑色）。
+    # THRESH_BINARY_INV 反转二值化方法，将像素值大于阈值的像素设置为最小值（黑色），小于等于阈值的像素设置为最大值（白色）
     ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
     # cv.bitwise_not() 函数可以对图像进行按位取反操作。https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga0002cf8b418479f4cb49a75442baee2f
     mask_inv = cv.bitwise_not(mask)
