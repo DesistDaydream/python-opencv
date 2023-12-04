@@ -35,7 +35,7 @@ for md in methods:
         mdName = "TM_CCOEFF_NORMED"
 
     matchedResult = cv2.matchTemplate(i_img, t_img, md)
-    # result是我们各种算法下匹配后的图像
+    # matchedResult 是我们各种算法下匹配后的图像
     cv2.imshow("%s" % md, matchedResult)
     # 获取的是每种公式中计算出来的值，每个像素点都对应一个值
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matchedResult)

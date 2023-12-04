@@ -5,7 +5,7 @@ import cv2
 
 
 # 从摄像头捕获图片
-def CapturePictureFromCamera(cap):
+def CapturePictureFromCamera(cap: cv2.VideoCapture):
     # 读取当前帧，即拍照。
     # 返回值是一个 bool 和一个 cv::Mat 对象，ret 为 True 时表示读取成功
     retval, frame = cap.read()
@@ -22,7 +22,7 @@ def CapturePictureFromCamera(cap):
 
 
 # 从摄像头捕获视频
-def CaptureVideoFromCamera(cap):
+def CaptureVideoFromCamera(cap: cv2.VideoCapture):
     # 通过一个循环来捕获每一帧，然后在逐一显示捕获到的每一帧，这样就形成了视频。
     while True:
         ret, frame = cap.read()
@@ -40,9 +40,9 @@ def CaptureVideoFromCamera(cap):
 
 
 # 保存视频
-def SavingVideo(cap):
+def SavingVideo(cap: cv2.VideoCapture):
     # 定义视频编解码器，由 4 字节代码表示。
-    fourcc = cv2.VideoWriter_fourcc(*"XVID")
+    fourcc = cv2.VideoWriter.fourcc(*"XVID")
 
     # 使用 FOURCC 创建 VideoWriter 对象。
     # 第一个参数是输出文件名，第二个参数是编解码器，第三个参数是帧率，第四个参数是帧大小
@@ -142,12 +142,16 @@ if __name__ == "__main__":
         print("Cannot open camera")
         exit()
 
+    # 从摄像头捕获图片
     # CapturePictureFromCamera(cap)
+    # 从摄像头捕获视频
     # CaptureVideoFromCamera(cap)
-    # SavingVideo(cap)
+    # 保存视频
+    SavingVideo(cap)
+    # 从文件播放视频
     # PlayingVideoFromFile()
-
-    ViedeProperty(cap)
+    # 获取、设置视频属性
+    # ViedeProperty(cap)
 
     # 退出程序结束之前释放摄像头
     cap.release()
