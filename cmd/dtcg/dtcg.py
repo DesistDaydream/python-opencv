@@ -50,12 +50,12 @@ class CardsInfo:
     dirPathDst: str
 
     # 目录前缀。
-    dirPrefixCN: str = "BTC-07"
-    dirPrefixEN: str = "RB-01"
-    dirPrefixDst: str = "RB-01"
+    dirPrefixCN: str = "BTC-08"
+    dirPrefixEN: str = "BT14"
+    dirPrefixDst: str = "BT-14"
     # 图片名称前缀。用以匹配图片以及生成卡牌编号
-    filePrefixCN: str = "RB1-"
-    filePrefixEN: str = "RB1-"
+    filePrefixCN: str = "BT14-"
+    filePrefixEN: str = "BT14_"
     # 图片名称后缀。用以匹配图片以及生成卡牌编号
     fileSuffixCN: str = ".png"
     fileSuffixEN: str = ".png"
@@ -68,8 +68,8 @@ class CardsInfo:
     fileCardNumLenCN: int = 3
     fileCardNumLenEN: int = 3
     # 图片中的卡号中驯兽师、选项的起始和结束卡号
-    fileCardNumOfTamerStart: int = 32
-    fileCardNumOfTamerEnd: int = 35
+    fileCardNumOfTamerStart: int = 82
+    fileCardNumOfTamerEnd: int = 100
     # 图片中的卡号中数码宝贝、数码蛋的起始和结束卡号
     fileCardNumOfDigimonStart: int = fileCardNumOfTamerStart - 1
     fileCardNumOfDigimonEnd: int = fileCardNumOfTamerEnd + 1
